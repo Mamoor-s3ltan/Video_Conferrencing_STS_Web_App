@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../../conn.js";
+import Header from "../../components/Header";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -97,6 +98,8 @@ const Signup = () => {
   };
 
   return (
+    <>
+      <Header />
     <div className="flex flex-col lg:flex-row justify-center items-center min-h-screen bg-gradient-to-br from-purple-700 via-purple-600 to-purple-800 gap-10">
       <form
         onSubmit={handleSubmit}
@@ -178,6 +181,7 @@ const Signup = () => {
         ))}
       </div>
     </div>
+    </>
   );
 };
 
