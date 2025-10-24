@@ -44,57 +44,59 @@ const Signup = () => {
       return;
     }
 
-    try {
-      setLoading(true);
+   try {
+  setLoading(true);
 
-      let imageUrl = null;
-      
-      if (imageFile) {
-        const { data: imageData, error: imageError } = await supabase.storage
-          .from("pf_img") // ✅ use the same bucket name consistently
-          .upload(`users/${Date.now()}_${imageFile.name}`, imageFile);
+  // 🔹 Step 1: Sign up user
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+  });
 
-        if (imageError) {
-          console.error("Error uploading image:", imageError);
-          alert("Error uploading image");
-          return;
-        }
+  if (error) throw error;
 
-        const { data: publicUrlData } = supabase.storage
-          .from("pf_img")
-          .getPublicUrl(imageData.path);
+  let imageUrl = null;
 
-        imageUrl = publicUrlData.publicUrl;
-      }
+  // 🔹 Step 2: Upload image (after signup)
+  if (data.user && imageFile) {
+    const { data: imageData, error: imageError } = await supabase.storage
+      .from("pf_img") // make sure bucket name matches exactly
+      .upload(`users/${data.user.id}/${Date.now()}_${imageFile.name}`, imageFile);
 
-      // 🔹 Sign up user
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-      });
-
-      if (error) throw error;
-
-      // 🔹 Save profile data
-      if (data.user) {
-        const { error: profileError } = await supabase.from("profiles").insert([
-          {
-            id: data.user.id,
-            username,
-            country,
-            avatar_url: imageUrl,
-          },
-        ]);
-
-        if (profileError) throw profileError;
-      }
-
-      alert("Signup successful! Please verify your email.");
-    } catch (err) {
-      alert(`Error: ${err.message}`);
-    } finally {
-      setLoading(false);
+    if (imageError) {
+      console.error("Error uploading image:", imageError);
+      alert("Error uploading image");
+      return;
     }
+
+    const { data: publicUrlData } = supabase.storage
+      .from("pf_img")
+      .getPublicUrl(imageData.path);
+
+    imageUrl = publicUrlData.publicUrl;
+  }
+
+  // 🔹 Step 3: Save profile data
+  if (data.user) {
+    const { error: profileError } = await supabase.from("profiles").insert([
+      {
+        id: data.user.id,
+        username,
+        country,
+        avatar_url: imageUrl,
+      },
+    ]);
+
+    if (profileError) throw profileError;
+  }
+
+  alert("Signup successful! Please verify your email.");
+} catch (err) {
+  console.error("Signup error:", err);
+  alert(`Error: ${err.message}`);
+} finally {
+  setLoading(false);
+}
   };
 
   return (

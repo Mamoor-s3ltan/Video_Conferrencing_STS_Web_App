@@ -1,12 +1,9 @@
 import React from 'react'
-import { supabase } from "../../conn.js";
 
-function dashboard() {
+const Dashboard = () => {
   return (
-    <div>
-      Dashboard
-    </div>
+    <div>Dashboard</div>
   )
 }
 
-export default dashboard
+export default Dashboard
