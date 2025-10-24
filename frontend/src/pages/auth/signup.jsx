@@ -47,14 +47,12 @@ const Signup = () => {
       setLoading(true);
 
       let imageUrl = null;
-      
       if (imageFile) {
         const { data: imageData, error: imageError } = await supabase.storage
-          .from("pf_img") // ✅ use the same bucket name consistently
+          .from("pf_img")
           .upload(`users/${Date.now()}_${imageFile.name}`, imageFile);
 
         if (imageError) {
-          console.error("Error uploading image:", imageError);
           alert("Error uploading image");
           return;
         }
@@ -66,7 +64,6 @@ const Signup = () => {
         imageUrl = publicUrlData.publicUrl;
       }
 
-      // 🔹 Sign up user
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -74,7 +71,6 @@ const Signup = () => {
 
       if (error) throw error;
 
-      // 🔹 Save profile data
       if (data.user) {
         const { error: profileError } = await supabase.from("profiles").insert([
           {
@@ -84,7 +80,6 @@ const Signup = () => {
             avatar_url: imageUrl,
           },
         ]);
-
         if (profileError) throw profileError;
       }
 
@@ -97,85 +92,62 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row justify-center items-center min-h-screen bg-gradient-to-br from-purple-700 via-purple-600 to-purple-800 gap-10">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-lg w-full max-w-sm text-white"
-      >
-        <h2 className="text-2xl font-bold text-center mb-6">Create Account</h2>
+    <div className="min-h-screen flex flex-col lg:flex-row bg-[#1E1E1E] text-white">
 
-        <input
-          name="username"
-          value={formData.username}
-          onChange={handleChange}
-          type="text"
-          placeholder="Username"
-          className="border border-purple-300 bg-transparent text-white placeholder-purple-200 p-2 mb-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-        />
-        <input
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          type="email"
-          placeholder="Email"
-          className="border border-purple-300 bg-transparent text-white placeholder-purple-200 p-2 mb-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-        />
-        <input
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          type="password"
-          placeholder="Password"
-          className="border border-purple-300 bg-transparent text-white placeholder-purple-200 p-2 mb-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-        />
-        <input
-          name="confirmPassword"
-          value={formData.confirmPassword}
-          onChange={handleChange}
-          type="password"
-          placeholder="Confirm Password"
-          className="border border-purple-300 bg-transparent text-white placeholder-purple-200 p-2 mb-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-        />
-        <input
-          name="country"
-          value={formData.country}
-          onChange={handleChange}
-          type="text"
-          placeholder="Country"
-          className="border border-purple-300 bg-transparent text-white placeholder-purple-200 p-2 mb-5 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-        />
+      {/* Left Section */}
+      <div className="flex flex-col justify-center items-center bg-[#2B2B2B] w-full lg:w-1/2 p-10 rounded-r-3xl">
+        <div className="bg-[#3A3A3A] rounded-full w-32 h-32 flex items-center justify-center mb-6">
+          <div className="w-20 h-20 bg-gray-600 rounded-full" />
+        </div>
+        <h2 className="text-2xl font-semibold text-indigo-400 mb-2">Conversations Without Borders</h2>
+        <p className="text-gray-400 text-center max-w-sm">
+          Connect and collaborate anywhere, anytime — securely and effortlessly.
+        </p>
+      </div>
 
-        {/* 🔹 Image Upload */}
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setImageFile(e.target.files[0])}
-          className="border border-purple-300 bg-transparent text-white placeholder-purple-200 p-2 mb-5 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-        />
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-purple-600 hover:bg-purple-700 transition-colors text-white p-2 rounded-lg w-full font-semibold"
+      {/* Right Section (Form) */}
+      <div className="flex justify-center items-center w-full lg:w-1/2 p-10">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-[#2B2B2B] p-8 rounded-2xl shadow-lg w-full max-w-md border border-gray-700"
         >
-          {loading ? "Creating Account..." : "Sign Up"}
-        </button>
-      </form>
+          <h2 className="text-2xl font-bold text-center text-indigo-400 mb-6">Create Your Account</h2>
 
-      {/* 🔹 Display Profiles */}
-      <div className="flex flex-col gap-4">
-        {profile.map((prof) => (
-          <div key={prof.id} className="text-center">
-            <h2 className="text-white">{prof.username}</h2>
-            {prof.avatar_url && (
-              <img
-                src={prof.avatar_url}
-                alt="avatar"
-                className="w-20 h-20 rounded-full mx-auto border-2 border-white"
-              />
-            )}
-          </div>
-        ))}
+          {["username", "email", "password", "confirmPassword", "country"].map((field, i) => (
+            <input
+              key={i}
+              name={field}
+              value={formData[field]}
+              onChange={handleChange}
+              type={field.includes("password") ? "password" : "text"}
+              placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+              className="bg-[#1E1E1E] border border-gray-600 text-gray-200 placeholder-gray-400 p-3 mb-4 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          ))}
+
+          {/* Image Upload */}
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setImageFile(e.target.files[0])}
+            className="bg-[#1E1E1E] border border-gray-600 text-gray-200 placeholder-gray-400 p-3 mb-5 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="bg-indigo-600 hover:bg-indigo-500 transition text-white p-3 rounded-lg w-full font-semibold"
+          >
+            {loading ? "Creating Account..." : "SIGN UP"}
+          </button>
+
+          <p className="text-gray-400 text-sm text-center mt-4">
+            Already registered?{" "}
+            <a href="/signin" className="text-indigo-400 hover:underline">
+              Sign in
+            </a>
+          </p>
+        </form>
       </div>
     </div>
   );
