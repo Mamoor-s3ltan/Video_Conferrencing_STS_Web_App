@@ -4,6 +4,7 @@ import Signup from "./pages/auth/signup";
 import Signin from "./pages/auth/signin";
 import Dashboard from "./pages/dashboard/dashboard.jsx";
 import ReadyToJoin from "./pages/ready_to_join/ready_to_join.jsx";
+import VideoChat from "./pages/Video_Chat.jsx";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Route path="/signin" element={<Signin />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/ready_to_join" element={<ReadyToJoin />} />
+      <Route path="/meeting" element={<VideoChat />} />
       
     </Routes>
   );

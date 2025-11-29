@@ -45,35 +45,6 @@ const Signup = () => {
     }
 
    try {
-  setLoading(true);
-
-  // 🔹 Step 1: Sign up user
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-  });
-
-  if (error) throw error;
-
-      let imageUrl = null;
-      
-      if (imageFile) {
-        const { data: imageData, error: imageError } = await supabase.storage
-          .from("pf_img") // ✅ use the same bucket name consistently
-          .upload(`users/${Date.now()}_${imageFile.name}`, imageFile);
-
-        if (imageError) {
-          console.error("Error uploading image:", imageError);
-          alert("Error uploading image");
-          return;
-        }
-
-    const { data: publicUrlData } = supabase.storage
-      .from("pf_img")
-      .getPublicUrl(imageData.path);
-
-    imageUrl = publicUrlData.publicUrl;
-  }
 
       // 🔹 Sign up user
       const { data, error } = await supabase.auth.signUp({
@@ -90,7 +61,6 @@ const Signup = () => {
             id: data.user.id,
             username,
             country,
-            avatar_url: imageUrl,
           },
         ]);
 
@@ -125,15 +95,6 @@ const Signup = () => {
               className="bg-[#1E1E1E] border border-gray-600 text-gray-200 placeholder-gray-400 p-3 mb-4 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           ))}
-
-          {/* Image Upload */}
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setImageFile(e.target.files[0])}
-            className="bg-[#1E1E1E] border border-gray-600 text-gray-200 placeholder-gray-400 p-3 mb-5 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-
           <button
             type="submit"
             disabled={loading}
@@ -150,8 +111,6 @@ const Signup = () => {
           </p>
         </form>
       </div>
-    </div>
-    </>
   );
 };
 

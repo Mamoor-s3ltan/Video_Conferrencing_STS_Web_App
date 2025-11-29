@@ -1,13 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-<<<<<<< HEAD
 import Header from "../components/Header";
 import Hero_img from "../assets/hero_img.jpg";
 import {Podcast,AudioWaveform,ShieldCheck } from 'lucide-react'
-=======
-import Hero_img from "../assets/hero_img.jpg";
-import { Podcast, AudioWaveform, ShieldCheck } from "lucide-react";
->>>>>>> 5561fde7b4857bc0081d53463e5b189313413ec2
+
 
 const Landing = () => {
   return (
@@ -22,15 +18,12 @@ const Landing = () => {
           <a href="#contact" className="text-gray-300 hover:text-indigo-400">Contact</a>
         </nav>
         <div className="space-x-3">
-<<<<<<< HEAD
-          <button className="px-4 py-2 bg-purple-500 hover:bg-purple-600 rounded-full text-sm font-medium">Login</button>
-=======
           <Link to="/signin">
             <button className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-medium">
               Login
             </button>
           </Link>
->>>>>>> 5561fde7b4857bc0081d53463e5b189313413ec2
+
           <Link to="/signup">
             <button className="px-4 py-2 bg-white text-black hover:bg-gray-200 rounded-lg text-sm font-medium">
               Sign Up
@@ -62,11 +55,7 @@ const Landing = () => {
           <img
             src={Hero_img}
             alt="Video Conferencing Illustration"
-<<<<<<< HEAD
-            className="w-3/4 max-w-sm drop-shadow-md rounded-lg"
-=======
             className="w-3/4 max-w-sm drop-shadow-xl rounded-lg border border-gray-700"
->>>>>>> 5561fde7b4857bc0081d53463e5b189313413ec2
           />
         </div>
       </section>
@@ -76,33 +65,19 @@ const Landing = () => {
         <h3 className="text-3xl font-bold text-center mb-12 text-indigo-400">Why Choose Us</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
-<<<<<<< HEAD
             { title: "HD Video & Audio", desc: "Enjoy crystal-clear communication during meetings.",icon:<Podcast className="w-6 h-6 text-purple-200" /> },
             { title: "Real-time Translation", desc: "Break language barriers with live translation.",icon:<AudioWaveform className="w-6 h-6 text-purple-200" /> },
             { title: "Secure & Reliable", desc: "Your data and privacy are fully protected.",icon:<ShieldCheck className="w-6 h-6 text-purple-200" /> },
-=======
-            { title: "HD Video & Audio", desc: "Enjoy crystal-clear communication during meetings.", icon: <Podcast className="w-6 h-6 text-indigo-400" /> },
-            { title: "Real-time Translation", desc: "Break language barriers with live translation.", icon: <AudioWaveform className="w-6 h-6 text-indigo-400" /> },
-            { title: "Secure & Reliable", desc: "Your data and privacy are fully protected.", icon: <ShieldCheck className="w-6 h-6 text-indigo-400" /> },
->>>>>>> 5561fde7b4857bc0081d53463e5b189313413ec2
           ].map((feature, i) => (
             <div
               key={i}
               className="bg-[#1E1E1E] rounded-2xl p-8 shadow-lg border border-gray-700 hover:border-indigo-600 transition"
             >
-<<<<<<< HEAD
-              <div className="flex  justify-center gap-2 justify-items-center">
-              <h4 className="text-xl font-semibold mb-3">{feature.title}</h4>
-              <span>{feature.icon}</span>
-              </div>
-              <p className="text-purple-200">{feature.desc}</p>
-=======
               <div className="flex justify-center items-center gap-2 mb-3">
                 <span>{feature.icon}</span>
                 <h4 className="text-xl font-semibold">{feature.title}</h4>
               </div>
               <p className="text-gray-300 text-center">{feature.desc}</p>
->>>>>>> 5561fde7b4857bc0081d53463e5b189313413ec2
             </div>
           ))}
         </div>

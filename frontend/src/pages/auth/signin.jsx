@@ -25,11 +25,12 @@ const Signin = () => {
 
     try {
       setLoading(true);
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data,error } = await supabase.auth.signInWithPassword({
         email: identifier,
         password,
       });
-      if (error) throw error;
+     if (error) throw error;
+     localStorage.setItem('session',JSON.stringify(data.session));
 
       alert("Signed in successfully!");
       navigate("/dashboard");
